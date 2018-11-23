@@ -1,3 +1,3 @@
 # Grafana-scripts
 
-Currently just one script, but eventaully there will be a collection of scripts to help administer and automate Grafana configurations.
+Some scripts to assist with the migration of Grafana storage from sqlite3 to postgreSQL. Although could really be used in any direction.
