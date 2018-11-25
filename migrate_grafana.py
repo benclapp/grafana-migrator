@@ -9,7 +9,7 @@ import json
 import time
 import grafana
 
-parser = argparse.ArgumentParser(description='Import and export various grafana objects.')
+parser = argparse.ArgumentParser(description='Import and export various grafana objects. One import type is required.')
 
 import_flags = parser.add_mutually_exclusive_group(required=True)
 import_flags.add_argument('--all', action='store_true', dest='import_all', help='Migrate ALL data (datasources, folders, dashboards, snapshots)')
