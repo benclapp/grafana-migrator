@@ -16,5 +16,5 @@ def create_new(grafana, datasource):
     datasource.pop('id')
     datasource.pop('orgId')
 
-    # post(grafana, '/api/datasources', datasource)
+    post(grafana, '/api/datasources', datasource)
 

@@ -30,6 +30,20 @@ def post(conn_details, path, body):
         }
 
     r = requests.post(url, headers=headers, data=body)
-    # print(r.text)
     r.raise_for_status()
     
+    return r.text
+
+def post_json_contenttype(conn_details, path, body):
+    """Posts a request"""
+
+    url = conn_details.get("server") + path
+    headers = {
+        'Authorization': str("Bearer " + conn_details.get("apikey")),
+        'Content-Type': 'application/json;charset=UTF-8'
+        }
+
+    _body = json.dumps(body)
+
+    r = requests.post(url, headers=headers, data=_body)
+    r.raise_for_status()

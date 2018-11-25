@@ -25,10 +25,6 @@ gconf.add_argument('--target-server', type=str, dest='target_server', required=T
 gconf.add_argument('--target-apikey', type=str, dest='target_apikey', required=True,
                     help='The api key for the grafana instance to migrate data TO')
 
-def dump_json(dump_me):
-    with open("dump.json", 'w') as outfile:
-        json.dump(dump_me, outfile, indent=4, sort_keys=True)
-
 args = parser.parse_args()
 
 source = dict(server = args.source_server, apikey = args.source_apikey)
@@ -53,14 +49,14 @@ if args.import_db or args.import_all:
     for result in results:
         if result.get('type') == "dash-folder":
             folder = result
-            create_folder(target, folder)
+            target_folder_id = create_folder(target, folder)
 
             dbs = get_search_results(source, folder.get('id'))
             for db in dbs:
                 _db = get_db(source, db.get('uid'))
-                create_db(target, _db)
+                create_db(target, _db, target_folder_id)
 
         elif result.get('type') == "dash-db":
             db = result
             _db = get_db(source, db.get('uid'))
-            create_db(target, _db)
+            create_db(target, _db, 0)

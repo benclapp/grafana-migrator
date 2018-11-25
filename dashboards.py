@@ -13,8 +13,19 @@ def get_db(grafana, uid):
 
 def create_folder(grafana, src_folder):
     print("Creating folder " + src_folder.get('title'))
-    post(grafana, "/api/folders", src_folder)
 
-def create_db(grafana, db):
-    print('Creating dashboard ' + db['dashboard']['title'] + ' ' + db['dashboard']['uid'])
-    post(grafana, "/api/dashboards/db", db)
+    response = post(grafana, "/api/folders", src_folder)
+    response_json = json.loads(response)
+
+    return response_json.get('id')
+
+def create_db(grafana, db, folderId):
+    print('Creating dashboard ' + db['dashboard']['title'] + ' in folder ' + str(folderId))
+    db.pop('meta')
+    _db = db
+    _db['dashboard']['id'] = None
+    _db['overwrite'] = True
+    _db['folderId'] = folderId
+    _db['inputs'] = []
+
+    post_json_contenttype(grafana, "/api/dashboards/import", _db)
