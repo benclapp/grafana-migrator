@@ -7,7 +7,6 @@ def get_search_results(grafana, folderid):
     return get_with_params(grafana, "/api/search", q_params)
 
 def get_db(grafana, uid):
-    print("Gettind dashboard with uid " + uid)
     dash = get(grafana, str("/api/dashboards/uid/" + uid))
     return dash
 

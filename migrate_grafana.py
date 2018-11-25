@@ -4,6 +4,7 @@
 import argparse
 import datasources
 from dashboards import *
+import snapshots
 import json
 import time
 import grafana
@@ -11,9 +12,10 @@ import grafana
 parser = argparse.ArgumentParser(description='Import and export various grafana objects.')
 
 import_flags = parser.add_mutually_exclusive_group(required=True)
-import_flags.add_argument('--all', action='store_true', dest='import_all', help='Migrate ALL data (datasources, folders, dashboards)')
+import_flags.add_argument('--all', action='store_true', dest='import_all', help='Migrate ALL data (datasources, folders, dashboards, snapshots)')
 import_flags.add_argument('--ds', '--datasources', action='store_true', dest='import_ds', help='Migrate datasources')
 import_flags.add_argument('--db', '--dashboards', action='store_true', dest='import_db', help='Migrate dashboards (and folders)')
+import_flags.add_argument('--ss', '--snapshots', action='store_true', dest='import_ss', help='Migrate snapshots')
 
 gconf = parser.add_argument_group('Grafana Configs')
 gconf.add_argument('--source-server', type=str, dest='source_server', required=True,
@@ -36,6 +38,8 @@ elif args.import_ds:
     print('Migrating datasources only')
 elif args.import_db:
     print('Migrating dashboards (and folders) only')
+elif args.import_ss:
+    print('Migrate snapshots')
 
 if args.import_ds or args.import_all:
     _datasources = datasources.get_list(source)
@@ -60,3 +64,9 @@ if args.import_db or args.import_all:
             db = result
             _db = get_db(source, db.get('uid'))
             create_db(target, _db, 0)
+
+if args.import_ss or args.import_all:
+    _snapshots = snapshots.list(source)
+    for snapshot in _snapshots:
+        _snapshot = snapshots.get_ss(source, snapshot.get('key'))
+        snapshots.create(target, _snapshot)
