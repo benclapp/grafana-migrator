@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# eyJrIjoiT0FTdXVwV2xzUW5MYkwzNm5iYzJMMTU1ckttN1NZbEQiLCJuIjoiRGF0YUV4cG9ydGVyIiwiaWQiOjF9
 
 import argparse
 import datasources
